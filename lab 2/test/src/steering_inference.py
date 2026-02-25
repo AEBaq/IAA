@@ -44,7 +44,7 @@ class SteeringInferenceNode:
 
         # Parameters
         pkg_path = rospkg.RosPack().get_path("test")
-        default_checkpoint = os.path.join(pkg_path, "src/best_model.pth")
+        default_checkpoint = os.path.join(pkg_path, "src/best_finetuned_model.pt")
         self.checkpoint_path = rospy.get_param(
             "~checkpoint_path",
             default_checkpoint,
@@ -66,12 +66,6 @@ class SteeringInferenceNode:
         #self.model = ...
         print(f"Loading model from {self.checkpoint_path}")
         
-        ckpt = torch.load(
-            self.checkpoint_path, map_location=self.device, weights_only=True
-        )
-
-        self.model.load_state_dict(ckpt["model_state_dict"])
-        rospy.loginfo("Loaded model weights")
         self.model.to(self.device)
         self.model.eval()
 
