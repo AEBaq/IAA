@@ -1,0 +1,11 @@
+<package>
+  <name>data_collection</name>
+  <version>0.0.1</version>
+  <description>
+  Data collection package for Duckietown.
+  </description>
+  <maintainer email="mehdi.akeddar@heig-vd.ch">Mehdi Akeddar</maintainer>
+  <license>None</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>

@@ -1,0 +1,11 @@
+<package>
+  <name>test</name>
+  <version>0.0.1</version>
+  <description>
+  Test package for Duckietown.
+  </description>
+  <maintainer email="mehdi.akeddar@heig-vd.ch">Mehdi Akeddar</maintainer>
+  <license>None</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>
