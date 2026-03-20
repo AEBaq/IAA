@@ -1,5 +1,7 @@
 # Guide to setup on the DuckieBot (Jetson Nano, Jetpack 4.6, Arm 64, Cuda 10.2)
 
+SSH to your DuckieBot to install the TCP inference server.
+
 ## install deps
 sudo apt-get install curl libssl-dev libboost-python-dev libboost-thread-dev cuda-libraries-10-2 cuda-toolkit-10-2
 
@@ -29,7 +31,7 @@ exec "$SHELL"
 
 
 ## setup project
-cd project
+cd tcp-inference-server/
 pyenv install 3.6.15 --verbose
 pyenv local 3.6.15
 
