@@ -1,0 +1,6 @@
+# Runtime dependency (installable via pip)
+numpy
+
+# tensorrt  — system-installed via JetPack/apt; do NOT pip install
+# pycuda    — requires manual build; see README for instructions
+# onnxruntime_gpu — install from the local .whl if needed
