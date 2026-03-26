@@ -11,8 +11,9 @@ SSH into your DuckieBot before running the commands below.
 ### 1. Install system dependencies
 
 ```bash
-sudo apt-get install curl libssl-dev libboost-python-dev libboost-thread-dev \
-    cuda-libraries-10-2 cuda-toolkit-10-2
+sudo apt-get install -y curl libssl-dev libboost-python-dev libboost-thread-dev \
+    cuda-libraries-10-2 cuda-toolkit-10-2 libnvinfer libnvinfer-dev libnvinfer-plugin \
+    libnvinfer-plugin-dev libnvparsers libnvparsers-dev libnvinfer-rt
 ```
 
 ### 2. Add environment variables
@@ -54,12 +55,8 @@ pyenv local 3.6.15
 
 ### 5. Configure TensorRT
 
-> TensorRT is pre-installed on JetPack — do **not** install it via pip. Just make it accessible:
+> TensorRT is pre-installed on JetPack — do **not** install it via pip. It should be accessible if the environment variables have been set correctly.
 
-```bash
-echo 'export PYTHONPATH=/usr/lib/python3.6/dist-packages:$PYTHONPATH' >> ~/.bashrc
-source ~/.bashrc
-```
 
 ### 6. Create a virtual environment
 
@@ -89,7 +86,12 @@ echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64${LD_LIBRARY_PATH:+:${LD_
 echo 'export CUDA_HOME=/usr/local/cuda-10.2' >> venv/bin/activate
 deactivate
 source venv/bin/activate
+```
 
+> If you get an error saying that the file *xlocale.h* is missing, you can create a symbolic link to the *locale.h* file:
+> `sudo ln -s /usr/include/locale.h /usr/include/xlocale.h`
+
+```bash
 pip download pycuda==2022.1 --no-deps -d /tmp/pycuda_src
 cd /tmp/pycuda_src
 tar xzf pycuda-2022.1.tar.gz
