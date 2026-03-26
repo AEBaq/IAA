@@ -1,0 +1,95 @@
+\section{6ème partie : Réparation}
+
+\subsection{Manipulation 8.1}
+\textbf{En utilisant les programmes que vous avez codés, déchiffrez tous les documents fournis dans le dossier \texttt{/home}.}\newline
+
+Les trois fichiers n'ont pas été lisibles après plusieurs tentatives de déchiffrement, nous obtenons du "bruit" à la place du texte clair, un détail nous échappe forcément lors de notre analyse des fonctions de chiffrement. 
+
+\subsection{Question 8.1}
+\textbf{Expliquez l'algorithme de déchiffrement que vous avez implémenté. Indiquez les formules mathématiques appliquées par chaque méthode de déchiffrement ainsi que la logique du flux d'instruction qui permet d'appliquer l'une ou l'autre.}\newline
+
+\begin{itemize}
+\item \textbf{Choix de la méthode } : calculer
+\[
+\text{mode} \;=\; \big(\text{char\_occurrences}(\text{filename})\big)\ \&\ 3
+\]
+puis appliquer
+\[
+\begin{cases}
+\text{decrypt0} & \text{si }\text{mode}=0,\\
+\text{decrypt1} & \text{si }\text{mode}=1,\\
+\text{decrypt2} & \text{si }\text{mode}=2.
+\end{cases}
+\]
+
+\item \textbf{decrypt0 (inverse de \texttt{encrypt0})} : pour chaque byte lu \(c\) on applique un XOR conditionnel :
+\[
+K=\begin{cases}
+0xEF &\text{si }(c\ \&\ 0x02)=0,\\[4pt]
+0xBE &\text{sinon},
+\end{cases}
+\qquad
+o \;=\; c \oplus K.
+\]
+Remarque : \( \oplus \) est son inverse, donc on applique la même opération et cela restaure l'octet original.
+
+\item \textbf{decrypt1 (inverse de \texttt{encrypt1})} : notations : \(c\) octet chiffré, \(p\) valeur \texttt{char\_prev} (octet), \(o\) octet original.
+\[
+\text{(chiffrement)}\quad c = \big(\operatorname{ROL}_2(o)\; +\; p\big)\bmod 256
+\]
+\[
+\text{(mise à jour)}\quad p \leftarrow (c\gg 2)\;|\;(c\times '@') \quad(\text{opération sur octet})
+\]
+Déchiffrement (l'ordre importe) : connaissant \(c\) et \(p\),
+\[
+r \;=\; (c - p)\bmod 256,\qquad o \;=\; \operatorname{ROR}_2(r),
+\]
+puis mettre à jour \(p\) exactement comme en chiffrement :
+\[
+p \leftarrow (c\gg 2)\;|\;(c\times '@').
+\]
+
+\item \textbf{decrypt2 (inverse de \texttt{encrypt2}) — deux passes} : soit \(N\) la longueur des données (taille fichier \(-1\)), et \(final\_temp\) l'octet final ajouter par \texttt{encrypt2}.
+
+\begin{enumerate}
+\item \textbf{Inverse de la 2\(^\text{ème}\) phase (XOR avec \(\text{temp}\) incrémenté)} : calculer l'état initial de \(\text{temp}\)
+\[
+\text{temp}_0 \;=\; \big(final\_temp - 4\cdot N\big)\bmod 256.
+\]
+Pour \(i=0\ldots N-1\) :
+\[
+A[i] \;=\; B[i] \oplus \text{temp},\qquad \text{temp}\leftarrow (\text{temp}+4)\bmod 256,
+\]
+où \(B[i]\) sont les octets présents (après première passe) et \(A[i]\) est la séquence reconstruite qui correspond à la sortie de la première passe.
+
+\item \textbf{Reconstruire \(\text{key\_array1}\)} : appeler \(\texttt{generateKey}(\ldots)\) avec les mêmes paramètres constants que le binaire et découper la valeur 64-bits  comme dans \texttt{encrypt2} pour obtenir les bytes \(\text{key\_array1}[1\ldots 8]\).
+
+\item \textbf{Inverse de la 1\(^\text{ère}\) phase} : initialiser \(\text{key\_index}=0\). Pour \(i=0\ldots N-1\) :
+\[
+\text{key\_index} \leftarrow (\text{key\_index}+5)\ \&\ 0xE,\qquad idx=\text{key\_index}+1,
+\]
+\[
+o[i] \;=\; \big( (int8\_t)A[i] + (int8\_t)\,\text{key\_array1}[idx] \big)\bmod 256.
+\]
+Écrire \(o[i]\) sur la position \(i\).
+
+\item \textbf{Tronquer} : supprimer le byte final en tronquant le fichier à longueur \(N\).
+\end{enumerate}
+
+\end{itemize}
+
+\subsection{Manipulation 8.2}
+\textbf{En utilisant ghidra, patchez le programme \texttt{calc} pour qu'il puisse à nouveau être utilisé sans risque.} \newline
+Afin que le programme soit utilisé sans risque on va patcher en remplaçant le code assembleur : CALL \texttt{encrypt\_dir}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=1\textwidth]{images/call}
+	\caption{Instruction à patcher\\}
+\end{figure}
+
+Ensuite on fait : clique droit → patch instruction puis l'on remplace cette instruction par \texttt{NOP} sur 5 octets (Ghidra pourra générer 5 \texttt{NOP} consécutifs). Puis comme vu en cours, on peut valider le patch, Save (File → Save Program). Et enfin exporter le binaire patché (File → Export Program → ELF).
+
+
+
+

@@ -1,0 +1,121 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% HEIG-VD
+%%
+%% Modèle Latex pour laboratoire de POO
+%% Basé sur le chablon de CSN crée par MiM
+%% 
+%% Fichiers à changer : 
+%%            - constantes.tex
+%%            - Tous les fichiers du corps du rapport 
+%%
+%% Auteur : Emily Baquerizo
+%% Date   : 06.10.24
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Paramétrage du papier utilisé
+\documentclass[a4paper,12pt,oneside]{article}
+
+% Ne pas toucher, nécessaire à la mise en forme
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc} % Nouvelle norme pour codage des caractères
+\usepackage{lmodern} % Nouvelle forme de la fonte ComputerModern
+\usepackage{babel} % Règles typographiques françaises, césures
+\babelprovide[import, main]{french}
+\usepackage{graphicx} % Insertion images
+\usepackage{epstopdf} % Convertir les images eps vers pdf
+\epstopdfsetup{outdir=./Images/converted_to_pdf/} % Dossier de sortie des images converties
+\pagenumbering{arabic}
+\usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm, showframe=false]{geometry}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{pdfpages}
+\usepackage{color}
+\usepackage{titlesec} % Indente les sous-sections pour améliorer la visibilité
+\usepackage{float} % Pour forcer la mise en place de l'image
+
+% fichier avec les constantes(étudiants, prof, labo, etc) A ADAPTER POUR CHAQUE LABO
+\input{chapitres/constantes.tex}
+
+% Entête et pieds de page (A ADAPTER)
+\pagestyle{empty}
+\usepackage{fancyhdr}
+\setlength{\headheight}{27.06pt}
+\pagestyle{fancy}
+% Entête :
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[L]{Labo \nbrlabo: \titre} 
+\fancyhead[R]{Rapport de laboratoire} 
+% Pied de page
+\fancyfoot{} % clear all footer fields
+\renewcommand{\footrulewidth}{1pt}
+\fancyfoot[R]{Page \thepage} 
+\fancyfoot[L]{HEIG-VD | \nomAuteur }
+
+% Package formatage de code C
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Package tableau
+\usepackage{tabularx}
+
+
+\lstset{
+  language=C,
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{orange},
+  frame=single,
+  tabsize=4,
+  showstringspaces=false,
+  breaklines=true
+}
+
+% debut du corps du rapport 
+\begin{document}	
+	% première page
+	\input{chapitres/PremierePage.tex}
+	% enlève le numero sur la premiere page
+	\thispagestyle{empty}
+	\setcounter{page}{1}
+	\newpage
+	
+	% ici débute le corps du rapport
+	% changer les sections au cas par cas afin de vous adapter au maximum aux critères
+	% Table des matières
+	\tableofcontents
+	\newpage % Commence une nouvelle page
+	%\section{Introduction}
+	%\input{chapitres/Introduction.tex}
+	%\section{Partie 1}
+	\input{chapitres/Partie_1.tex}
+	%\section{Partie 2}
+	\input{chapitres/Partie_2.tex}
+	%\section{Partie 3}
+	\input{chapitres/Partie_3.tex}
+	%\section{Partie 4}
+	%\input{chapitres/Partie_4.tex}
+	%\section{Partie 5}
+	%\input{chapitres/Partie_5.tex}
+	%\section{Partie 6}
+	%\input{chapitres/Partie_6.tex}
+	%\section{Conclusion}
+	%\input{chapitres/Conclusion.tex}
+	%\section{Code}
+	%\input{chapitres/Code.tex}
+	
+	% si des annexes sont nécessaires ajouter : 
+	% \section{Annexes}
+	% Changement de notation en lettre : 
+	%\appendix
+	% insertion d'une nouvelle page
+	%\newpage
+	% Ajouter un fichier latec dans le fichier courant
+	%\input{Chapitres/cdc.tex}
+	
+	%Fin du document
+\end{document}
+
+
