@@ -6,7 +6,7 @@ source /environment.sh
 dt-launchfile-init
 
 # launch publisher
-rosrun my_package my_publisher_node.py
+rosrun my_package steering_interference.py
 
 # wait for app to end
 dt-launchfile-join
