@@ -20,8 +20,28 @@ from cv_bridge import CvBridge
 
 # YOUR_CODE_HERE: import model
 model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'best_model.pt')
-model = torch.load(model_path, weights_only=False, map_location=torch.device('cpu'))
-model.eval()
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+checkpoint = torch.load(model_path, weights_only=False, map_location=device)
+print(type(checkpoint))
+print(checkpoint.keys())
+
+class SteeringNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.model = models.resnet18(pretrained=False)
+        in_features = self.model.fc.in_features
+        self.model.fc = nn.Sequential(
+            nn.Linear(in_features, 128),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(128, 2)
+        )
+    def forward(self, x):
+        return self.model(x)
+
+best_model = SteeringNet()
+best_model.load_state_dict(checkpoint['model_state_dict'])
+best_model.eval()
 
 def predict(model, image, preprocess, device="cpu"):
     """
@@ -46,8 +66,8 @@ class SteeringInferenceNode:
         rospy.init_node("steering_inference")
 
         # Parameters
-        pkg_path = rospkg.RosPack().get_path("test")
-        default_checkpoint = os.path.join(pkg_path, "src/best_finetuned_model.pt")
+        pkg_path = rospkg.RosPack().get_path("my_package")
+        default_checkpoint = os.path.join(pkg_path, "src/best_model.pt")
         self.checkpoint_path = rospy.get_param(
             "~checkpoint_path",
             default_checkpoint,
