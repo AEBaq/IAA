@@ -25,7 +25,7 @@ class DuckiebotWrapper(gym.Wrapper):
     * Integrates with :class:`~map.MapGraph` to:
 
         - Sample a random start/finish node pair at each episode reset.
-        - Find a shortest path between them (to be implemented with ``self.path``).
+        - Find a path between them (to be implemented with ``self.path``).
         - Orient the robot at the start tile so it faces the first waypoint.
 
     Attributes
@@ -161,7 +161,7 @@ class DuckiebotWrapper(gym.Wrapper):
         """
         # sample a new random start and finish node for each episode
         self.start_node, self.finish_node = self.map_graph.sample_random_start_finish_nodes(self.env._get_tile)
-        # find the best path between start and finish nodes using the graph
+        # find the path between start and finish nodes using the graph
         self.path = None # TODO
         self.next_node = None # TODO
         
