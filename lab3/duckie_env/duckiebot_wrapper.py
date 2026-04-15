@@ -75,7 +75,7 @@ class DuckiebotWrapper(gym.Wrapper):
         self.observation_space = gym.spaces.Dict({
             "image": gym.spaces.Box(
                 low=0, high=255,
-                shape=(120, 160, 3), # TODO: check if this is the correct shape for the simulator's observations
+                shape=(120, 160, 3),
                 dtype=np.uint8
             ),
         })
