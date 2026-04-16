@@ -1,1 +1,21 @@
-\section{Model choice}
+\section{Choix du modèle}
+\subsection{Architecture}
+Le modèle choisi est ResNet18 pré-entraîné sur ImageNet et se nomme DuckieNet. Nous avons fait ce choix pour plusieurs raisons : 
+\begin{itemize}
+  \item Taille compacte : ResNet18 compte 11.7M paramètres, ce qui est un bon compromis entre capacité d'apprentissage et vitesse d'inférence sur le Jetson Nano embarqué du Duckiebot.
+  \item Apprentissage par transfert : les features extraites des premières couches (textures, contours, formes) sont directement réutilisables pour la reconnaissance de routes, sans nécessiter un entraînement from scratch coûteux.
+  \item Architecture des couches : ResNet18 est composé de 4 blocs résiduels (layer1 à layer4), chacun avec 2 blocs de convolutions. La tête de classification originale est remplacée par une tête de régression personnalisée : \texttt{Linear(512 → 128) → ReLU → Dropout(0.3) → Linear(128 → 2)}. La sortie est un vecteur de 2 valeurs : \texttt{[vel_left, vel_right]}.
+  \item Stratégie de gel des couches : lors de l'entraînement initial, seuls layer4 et fc sont entraînés, les couches précédentes restant gelées. Cela accélère l'entraînement et évite le sur-apprentissage sur le dataset synthétique. La même stratégie est appliquée lors du fine-tuning.
+\end{itemize} 
+\subsection{Paramètres d'entraînement}
+L'entraînement initial est effectué sur 20 epochs avec un batch size de 32 et un learning rate de 1e-3. Le fine-tuning est effectué jusqu'à convergence des courbes de loss, avec un arrêt manuel basé sur l'observation du plateau de la val loss, en utilisant un batch size de 16 et un learning rate de 1e-5. \\
+Dans les deux cas, l'optimiseur Adam est utilisé pour sa convergence rapide et sa gestion automatique du learning rate par paramètre. La fonction de perte choisie est la MSELoss, adaptée à la nature continue de la tâche de régression. Le scheduler ReduceLROnPlateau réduit le learning rate d'un facteur 0.5 lorsque la val loss stagne, avec une patience de 3 epochs pour l'entraînement initial et 2 epochs pour le fine-tuning, évitant ainsi de rester bloqué dans un minimum local.
+\subsection{Fine-tuning}
+Le modèle entraîné sur le dataset synthétique présente un domain gap avec les images réelles du robot qui mène à des sorties de circuit lors du déploiement.
+Pour y remédier, un fine-tuning est effectué sur le dataset réel collecté manuellement. Plusieurs choix ont été faits :
+\begin{itemize}
+  \item Chargement depuis le meilleur checkpoint : le fine-tuning repart de best_model.pt via init_and_load, garantissant que les poids de départ sont optimaux.
+  \item Gel partiel conservé : seuls layer4 et fc restent entraînables, les couches basses étant gelées. Avec seulement 7 198 échantillons réels, entraîner toutes les couches risquerait de causer un overfitting et d'effacer les features générales apprises sur ImageNet.
+  \item Learning rate réduit : le passage de 1e-3 à 1e-5 permet des mises à jour douces qui adaptent le modèle sans détruire les connaissances acquises. 
+  \item Split aléatoire : le dataset réel est divisé aléatoirement en 80\% train et 20\% val via train_test_split, évitant le biais d'un split séquentiel qui aurait pu concentrer les virages dans un seul split.
+\end{itemize}
