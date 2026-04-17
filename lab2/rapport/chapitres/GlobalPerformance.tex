@@ -1,1 +1,34 @@
 \section{Global Performance}
+\subsection{Global Performance}
+L'entraînement initial sur le dataset synthétique donne les résultats suivants à convergence : 
+\begin{itemize}
+    \item MSE Loss : 0.0006 (entraînement et validation)
+    \item MAE : 0.016 (entraînement et validation)
+\end{itemize}
+Les courbes montrent une convergence rapide en 2-3 epochs sans overfitting. 
+La val loss légèrement inférieure à la train loss confirme que le dataset 
+synthétique est homogène et peu varié. \\
+
+\subsection{Fine-tuning (dataset réel)}
+Le fine-tuning sur le dataset réel donne les résultats suivants à convergence :
+\begin{itemize}
+    \item MSE Loss : 0.017 (validation)
+    \item MAE : 0.098 (validation)
+\end{itemize}
+Les courbes de train et validation descendent conjointement sans divergence, 
+indiquant une bonne généralisation sans overfitting. 
+
+\subsection{Analyse comparative}
+La MAE est environ 6 fois plus élevée après fine-tuning sur données réelles 
+(0.098) qu'après entraînement sur données synthétiques (0.016). 
+Cette différence s'explique par la plus grande variabilité des données réelles : 
+bruit, variations d'éclairage et calibration spécifique du robot.
+
+Cependant, les métriques numériques ne sont pas le seul critère de succès. 
+Le vrai test est le comportement du robot sur piste : le modèle entraîné 
+uniquement sur données synthétiques sortait régulièrement du circuit, 
+tandis que le fine-tuning vise à corriger ce comportement en adaptant 
+le modèle à la réalité physique du robot. \\
+
+\subsection{Tests sur le robot}
+Par manque de temps, nous n'avons pas pu tester le modèle final sur le robot.
