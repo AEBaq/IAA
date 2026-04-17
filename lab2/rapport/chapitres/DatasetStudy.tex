@@ -4,8 +4,10 @@ Le dataset fourni contient 25'205 échantillons, chacun compogé d'une image RGB
 L'analyse statistique révèle que les vitesses moyennes sont de 0.223 (droite) et 0.219 (gauche), avec un écart-type de 0.045 pour les deux roues. Les valeurs sont comprises entre 0.07 et environ 0.35. Le scatter plot \texttt{vel_left} vs \texttt{vel_right} montre une forte interprétation des situation de ligne droite (\texttt{vel_left} ≈ \texttt{vel_right}). Ce biais est caractéristique des datasets d'imitation learning collectés en autopilot.\\
 \textbf{Augmentation des données}  \\
 Pour pallier ce biais et améliorer le modèle, deux stratégies ont été appliquées :
-- Prétraitement des couleurs (\texttt{preprocess_road_colors}) : un masque HSV isole les éléments pertinents de la route — la ligne jaune centrale, les bords blancs et la surface grise/noire — en remplaçant les zones non pertinentes (herbe verte, ciel bleu) par un gris neutre (128). Cela rend le modèle insensible aux variations de décor.
-- Augmentation géométrique et colorimétriques : lors de l'entraînement, ColorJitter (brightness ±0.3, contrast ±0.3, saturation ±0.2) est appliqué pour simuler des variations d'éclairage.
+\begin{itemize}
+    \item Prétraitement des couleurs (\texttt{preprocess_road_colors}) : un masque HSV isole les éléments pertinents de la route, comme la ligne jaune centrale, les bords blancs et la surface grise/noire, en remplaçant les zones non pertinentes (herbe verte, ciel bleu) par un gris neutre (128). Cela rend le modèle insensible aux variations de décor.
+    \item Augmentation géométrique et colorimétriques : lors de l'entraînement, ColorJitter (brightness ±0.3, contrast ±0.3, saturation ±0.2) est appliqué pour simuler des variations d'éclairage.
+\end{itemize}
 \subsection{Dataset collecté manuellement}
 Un dataset réel de 7 198 échantillons a été collecté directement sur un robot physique via le package ROS \texttt{data_collection}. Cependant,  à cause des problèmes liés à notre robot lors des essaies de collecte de données, nous avons récupéré le dataset collecté par le groupe de Gwenaël et Pedro qui l'ont fait en conduite manuelle avec une mannette. \\  
 Ce dataset réel présente une distribution différente du dataset synthétique, reflétant la calibration spécifique du robot (distorsion optique, balance des blancs, différences colorimétriques). Il a été utilisé exclusivement pour le fine-tuning. \\
