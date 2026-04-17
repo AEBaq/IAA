@@ -15,7 +15,7 @@ Le modèle entraîné sur le dataset synthétique présente un domain gap avec l
 Pour y remédier, un fine-tuning est effectué sur le dataset réel collecté manuellement. Plusieurs choix ont été faits :
 \begin{itemize}
   \item Chargement depuis le meilleur checkpoint : le fine-tuning repart de best_model.pt via init_and_load, garantissant que les poids de départ sont optimaux.
-  \item Gel partiel conservé : seuls layer4 et fc restent entraînables, les couches basses étant gelées. Avec seulement 7 198 échantillons réels, entraîner toutes les couches risquerait de causer un overfitting et d'effacer les features générales apprises sur ImageNet.
+  \item Gel partiel conservé : seuls layer4 (dernier bloc convolutif de ResNet-18) et fully connected restent entraînables, les couches basses étant gelées. Avec 7 198 échantillons réels, entraîner toutes les couches risquerait de causer un overfitting et d'effacer les features générales apprises sur ImageNet.
   \item Learning rate réduit : le passage de 1e-3 à 1e-5 permet des mises à jour douces qui adaptent le modèle sans détruire les connaissances acquises. 
   \item Split aléatoire : le dataset réel est divisé aléatoirement en 80\% train et 20\% val via train_test_split, évitant le biais d'un split séquentiel qui aurait pu concentrer les virages dans un seul split.
 \end{itemize}
