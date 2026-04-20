@@ -1,5 +1,14 @@
 \babel@toc {french}{}\relax 
-\contentsline {section}{\numberline {1}Dataset study}{3}{section.1}%
-\contentsline {section}{\numberline {2}Model choice}{3}{section.2}%
-\contentsline {section}{\numberline {3}Global Performance}{3}{section.3}%
-\contentsline {section}{\numberline {4}Issues Encountered}{3}{section.4}%
+\contentsline {section}{\numberline {1}Étude du dataset}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Dataset initial}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Dataset collecté manuellement}{3}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Choix du modèle}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Architecture}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Paramètres d'entraînement}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Fine-tuning}{4}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Global Performance}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Global Performance}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Fine-tuning (dataset réel)}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Analyse comparative}{5}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Tests sur le robot}{5}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Issues Encountered}{5}{section.4}%
