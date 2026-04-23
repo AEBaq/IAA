@@ -7,6 +7,10 @@ Recupération des labos
 git checkout main
 git pull origin main
 git fetch gitlab
+git pull gitlab master
+
+>Warning : Attention au merge conflit !
+
 
 # 2. Mettre à jour la branche d’intégration avec mon travail
 git checkout integration_gitlab
