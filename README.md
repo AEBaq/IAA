@@ -6,11 +6,6 @@ Recupération des labos
 # 1. Mettre à jour les remotes
 git checkout main
 git pull origin main
-git fetch gitlab
-git pull gitlab master
-
->Warning : Attention au merge conflit !
-
 
 # 2. Mettre à jour la branche d’intégration avec mon travail
 git checkout integration_gitlab
@@ -18,6 +13,7 @@ git merge main
 # (résoudre conflits éventuels, puis `git add` + `git commit`)
 
 # 3. Intégrer les nouveautés du squelette (GitLab)
+git fetch gitlab
 git merge gitlab/master
 # (résoudre conflits, puis `git add` + `git commit`)
 
