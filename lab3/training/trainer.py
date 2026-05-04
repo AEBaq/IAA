@@ -30,6 +30,7 @@ import numpy as np
 
 # TODO: Import your agent
 # from agent import YourAgent
+from agent import PPOAgent
 
 from duckie_env import create_env, DuckiebotWrapper, LaneFollowingEnv
 from reward import advanced_reward_function
@@ -159,6 +160,7 @@ def train_agent(map_name: str, map_graph: str, render: bool = False,
     #     input_dims=(120, 160, 3),
     #     n_actions=2,
     # )
+    agent = PPOAgent()
 
     # ---- Restore checkpoint (if requested) ----
     start_episode   = 0
@@ -227,6 +229,7 @@ def train_agent(map_name: str, map_graph: str, render: bool = False,
             ckpt_path = os.path.join(checkpoint_dir, f'agent_ep{episode+1}.pth')
             # TODO: adapt to your agent's checkpoint saving mechanism
             # agent.save(ckpt_path)
+            agent.save(ckpt_path)
             _save_training_state(ckpt_path, episode + 1, update_count, scores, best_avg_score)
             print(f'  [Checkpoint] Saved at episode {episode+1}')
 
@@ -236,6 +239,7 @@ def train_agent(map_name: str, map_graph: str, render: bool = False,
             best_ckpt_path = os.path.join(checkpoint_dir, 'agent_best.pth')
             # TODO: adapt to your agent's checkpoint saving mechanism
             # agent.save(best_ckpt_path)
+            agent.save(best_ckpt_path)
             _save_training_state(best_ckpt_path, episode + 1, update_count, scores, best_avg_score)
 
     # Plot training metrics
@@ -251,3 +255,4 @@ def train_agent(map_name: str, map_graph: str, render: bool = False,
 
     # TODO: save your final model
     # agent.save('agent.pth')
+    agent.save('agent.pth')
