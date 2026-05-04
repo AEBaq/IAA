@@ -24,6 +24,7 @@ import numpy as np
 
 # TODO: Import your agent
 # from agent import YourAgent
+from agent import PPOAgent
 
 from duckie_env import create_env, DuckiebotWrapper, LaneFollowingEnv
 from reward import reward_function
@@ -74,6 +75,7 @@ def evaluate_agent(map_name: str, map_graph: str, num_episodes: int = 10,
     #     input_dims=(120, 160, 3),
     #     n_actions=2,
     # )
+    agent = PPOAgent()
 
     if checkpoint_path is None:
         checkpoint_path = 'checkpoints/agent_best.pth' if os.path.exists('checkpoints/agent_best.pth') else 'agent.pth'
