@@ -5,6 +5,8 @@ import cv2
 import gym
 import numpy as np
 
+import networkx as nx # for graph-based path planning
+
 from gym_duckietown.simulator import Simulator, logger
 
 logger.setLevel(logging.WARNING)
@@ -162,9 +164,10 @@ class DuckiebotWrapper(gym.Wrapper):
         # sample a new random start and finish node for each episode
         self.start_node, self.finish_node = self.map_graph.sample_random_start_finish_nodes(self.env._get_tile)
         # find the path between start and finish nodes using the graph
-        self.path = None # TODO
-        self.next_node = None # TODO
-        
+        # TODO : Task 1
+        self.path = nx.shortest_path(self.map_graph, self.start_node, self.finish_node)
+        self.next_node = self.path[1] # the next node is the first waypoint after the strat
+
         # set the duckiebot's position to the start node
         start_tile_coords = self.map_graph.node_name_to_tile_coords(self.start_node)
         self.env.user_tile_start = (start_tile_coords['col'], start_tile_coords['row'])
