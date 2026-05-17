@@ -1,6 +1,6 @@
 import gym
 
-from reward import basic_reward_function
+from reward import reward_function
 from .duckiebot_wrapper import DuckiebotWrapper
 
 

@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import cv2
 from torch.distributions import Normal
 
 
@@ -53,7 +54,8 @@ class PPOAgent:
         self.values    = []
 
     def choose_action(self, observation):
-        img = observation["image"]
+        img = observation["image"] if isinstance(observation, dict) else observation
+        img = cv2.resize(img, (160, 120))
         img = torch.tensor(img, dtype=torch.float32).permute(2, 0, 1).unsqueeze(0) / 255.0
 
         with torch.no_grad():
@@ -100,7 +102,7 @@ class PPOAgent:
         advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
         # Prépare les tensors
         obs_tensors = torch.cat([
-            torch.tensor(o["image"], dtype=torch.float32).permute(2, 0, 1).unsqueeze(0) / 255.0
+            torch.tensor(cv2.resize(o["image"] if isinstance(o, dict) else o, (160, 120)), dtype=torch.float32).permute(2, 0, 1).unsqueeze(0) / 255.0
             for o in self.obs
         ], dim=0)
 
