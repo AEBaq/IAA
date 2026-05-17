@@ -33,7 +33,7 @@ import numpy as np
 from agent import PPOAgent
 
 from duckie_env import create_env, DuckiebotWrapper, LaneFollowingEnv
-from reward import advanced_reward_function
+from reward import reward_function
 
 
 def _checkpoint_state_path(checkpoint_path: str) -> str:
@@ -149,10 +149,10 @@ def train_agent(map_name: str, map_graph: str, render: bool = False,
     # Create and wrap the environment
     env = create_env(map_name)
     env = DuckiebotWrapper(env, map_graph)
-    env = LaneFollowingEnv(env, reward_function=advanced_reward_function)
+    env = LaneFollowingEnv(env, reward_function=reward_function)
 
     # Hyperparameters
-    n_episodes = 5000
+    n_episodes = 1000
     # TODO: add your hyperparameters here
 
     # TODO: Initialize your agent
@@ -223,6 +223,8 @@ def train_agent(map_name: str, map_graph: str, render: bool = False,
         scores.append(score)
         avg_score = np.mean(scores[-100:])
         avg_scores.append(avg_score)
+
+        print(f"Episode {episode+1} | Score: {score:.2f} | Avg: {np.mean(scores[-100:]):.2f}", flush=True)
 
         # --- Periodic checkpoint (every 500 episodes) ---
         if (episode + 1) % 500 == 0:

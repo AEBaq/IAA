@@ -165,7 +165,7 @@ class DuckiebotWrapper(gym.Wrapper):
         self.start_node, self.finish_node = self.map_graph.sample_random_start_finish_nodes(self.env._get_tile)
         # find the path between start and finish nodes using the graph
         # TODO : Task 1
-        self.path = nx.shortest_path(self.map_graph, self.start_node, self.finish_node)
+        self.path = nx.shortest_path(self.map_graph.G, self.start_node, self.finish_node)
         self.next_node = self.path[1] # the next node is the first waypoint after the strat
 
         # set the duckiebot's position to the start node
