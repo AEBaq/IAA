@@ -15,7 +15,7 @@ Au sein de la famille Actor-Critic, nous choisissons PPO (Proximal Policy Optimi
 | Clip epsilon  | 0.2    | Limite les mises à jour de la politique                  |
 | Value coef    | 0.5    | Poids de la loss du Critic                               |
 | Epochs        | 4      | Nombre de passes de mise à jour par épisode              |
-| Épisodes      | 1000   | Durée totale de l'entraînement                           |
+| Épisodes      | 5000   | Durée totale de l'entraînement                           |
 ## Architecture du réseau
 ### Backbone CNN
 L'image, initialement de taille 480×640×3, est redimensionnée à 120×160×3 avant d'être passée au réseau.. Elle passe par trois couches de convolution qui extraient progressivement des features visuelles (bords, couleurs, lignes de route,...). La sortie est aplatie en un vecteur 1D puis transformée en un vecteur de 512 dimensions par une couche fully connected. 
@@ -41,12 +41,12 @@ L'agent PPO a été intégré dans la boucle d'entraînement en important `PPOAg
 Même import et instanciation de `PPOAgent`. L'agent charge un checkpoint existant via `load()` et utilise `choose_action(obs)` en mode évaluation, sans appel à `learn()`.
 
 ## Analyse
-
+Le premier entraînement a été fait avec 1000 épisodes car il a tourné sans GPU et a duré 49h. Nous avons fait la demande pour avoir accès aux GPUs pour les prochains enntraînement pour les améliorations avec 5000 épisodes
 ### Résultats d'entraînement
 
 ![Courbe d'entraînement](training_metrics.png)
 
-L'entraînement s'est déroulé sur 1000 épisodes. On distingue trois phases distinctes :
+On distingue trois phases distinctes :
 
 **Phase d'exploration (épisodes 0-50)** : les scores sont très variables, avec de nombreux épisodes négatifs. L'agent explore aléatoirement l'environnement sans politique stable.
 
