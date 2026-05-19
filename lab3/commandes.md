@@ -25,7 +25,7 @@ grep "Episode" training.log | tail -1
 ps aux | grep main.py
 ```
 
-**Arrêterl'entraînement**
+**Arrêter l'entraînement**
 ```bash
 kill $(pgrep -f main.py)
 ```
@@ -70,3 +70,29 @@ plt.savefig('training_metrics.png')
 print('Saved', len(scores), 'episodes')
 "
 ```
+## PC-REDS
+**Trouver ton job ID** \
+`squeue -u $(whoami)`
+
+**Voir les derniers épisodes (remplace <JOB_ID> par le vrai ID)** \
+`grep "Episode" logs/training_<JOB_ID>.out | tail -20`
+
+**Voir à quel épisode on en est** \
+`grep "Episode" logs/training_<JOB_ID>.out | tail -1`
+
+**Meilleur score** \
+`cat checkpoints/training_state_best.json`
+
+**Générer la courbe (en local ou dans un job dédié)** \
+`grep "Episode" logs/training_<JOB_ID>.out | awk -F'Score: ' '{print $2}' | awk -F' ' '{print $1}' > scores.txt`
+
+### Workflow typique
+* 1. Soumettre un entraînement : `sbatch run_training.sbatch`
+
+* 2. Surveiller : `squeue -u $(whoami)`
+
+* 3. Si le job expire après 3h, reprendre : `sbatch run_resume.sbatch`
+
+* 4. Évaluer à la fin : `sbatch run_eval.sbatch`
+
+* 5. Consulter l'historique : `sacct -format=JobID,JobName,State,Elapsed`
