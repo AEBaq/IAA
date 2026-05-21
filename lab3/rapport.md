@@ -8,7 +8,7 @@ Classe: IAA-A
 ## Introduction
 Ce laboratoire a pour objectif d'entraîner un agent de Reinforcement Learning à conduire un Duckiebot de manière autonome dans un réseau routier simulé. L'agent reçoit en entrée une image RGB de la caméra embarquée et doit produire des commandes de vitesse et de direction pour naviguer d'un point de départ à un point d'arrivée en suivant les voies.
 
-## Task 1 — Path Planning
+## Task 1 
 ### Implémentation
 Le path planning est implémenté dans la méthode `reset()` de `DuckiebotWrapper`. À chaque début d'épisode, un nœud de départ et un nœud d'arrivée sont échantillonnés aléatoirement sur le graphe de la carte. Le chemin entre ces deux nœuds est calculé avec l'algorithme de plus court chemin de NetworkX :
 ```python
@@ -20,7 +20,7 @@ self.next_node = self.path[1]
 ### Positionnement initial
 Une fois le chemin calculé, le robot est placé sur la tuile de départ orienté vers `self.next_node`. La direction est déterminée en comparant les coordonnées de la tuile de départ et du prochain nœud (différence de colonne/ligne), puis convertie en angle selon la convention gym-duckietown. Le robot est positionné dans la bonne voie selon sa direction de marche.
 
-## Task 2 — Reward Function
+## Task 2 
 ### Design de la fonction de récompense
 La fonction de récompense guide l'agent vers un comportement de conduite autonome en combinant plusieurs composantes :  
 **Avancement** : une récompense égale à la vitesse de l'agent est ajoutée à chaque step. Cela encourage l'agent à avancer plutôt que de rester immobile.  
