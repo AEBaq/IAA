@@ -47,6 +47,8 @@ def reward_function(observation, action, done, info, **kwargs):
     steering = action[1]
 
     reward += velocity  # encourage forward motion
+    if velocity < 0.1:
+        reward -= 0.5  # penalize being too slow or stationary
 
     simulator_info = info.get('Simulator', {})
     lane_position = simulator_info.get('lane_position', {})
