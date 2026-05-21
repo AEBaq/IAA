@@ -15,7 +15,7 @@ Au sein de la famille Actor-Critic, nous choisissons PPO (Proximal Policy Optimi
 | Clip epsilon  | 0.2    | Limite les mises à jour de la politique                  |
 | Value coef    | 0.5    | Poids de la loss du Critic                               |
 | Epochs        | 4      | Nombre de passes de mise à jour par épisode              |
-| Épisodes      | 5000   | Durée totale de l'entraînement                           |
+| Épisodes      | 1000   | Durée totale de l'entraînement                           |
 ## Architecture du réseau
 ### Backbone CNN
 L'image, initialement de taille 480×640×3, est redimensionnée à 120×160×3 avant d'être passée au réseau.. Elle passe par trois couches de convolution qui extraient progressivement des features visuelles (bords, couleurs, lignes de route,...). La sortie est aplatie en un vecteur 1D puis transformée en un vecteur de 512 dimensions par une couche fully connected. 
@@ -41,8 +41,7 @@ L'agent PPO a été intégré dans la boucle d'entraînement en important `PPOAg
 Même import et instanciation de `PPOAgent`. L'agent charge un checkpoint existant via `load()` et utilise `choose_action(obs)` en mode évaluation, sans appel à `learn()`.
 
 ## Analyse
-Le premier entraînement a été fait avec 1000 épisodes car il a tourné sans GPU et a duré 49h. Nous avons fait la demande pour avoir accès aux GPUs pour les prochains enntraînement pour les améliorations avec 5000 épisodes
-### Résultats d'entraînement
+Le premier entraînement a été fait avec 1000 épisodes car il a tourné sans GPU et a duré 49h. 
 
 ![Courbe d'entraînement](training_metrics.png)
 
@@ -54,6 +53,10 @@ On distingue trois phases distinctes :
 
 **Phase de convergence (épisodes 200-1000)** : la moyenne se stabilise autour de 265-280 et ne progresse plus significativement. Le meilleur score moyen de 295 a été atteint à l'épisode 191.
 
+### Évaluation
+
+L'évaluation sur 10 épisodes donne une récompense moyenne de **306**, ce qui est cohérent avec la convergence observée pendant l'entraînement. Lors de l'observation visuelle du comportement, on constate que l'agent a tendance à tourner sur place plutôt qu'à progresser vers le goal. Cela suggère que l'agent a convergé vers une **politique de survie**, il évite les crashes et reste sur la route mais ne navigue pas efficacement.
+
 ### Ce qui a fonctionné
 
 La reward function basée sur l'alignement avec la voie (`dot_dir`) et la distance au centre (`dist`) a bien guidé l'agent vers un comportement de suivi de voie. Les scores majoritairement positifs à partir de l'épisode 50 montrent que l'agent a appris à rester sur la route.
@@ -63,5 +66,6 @@ La reward function basée sur l'alignement avec la voie (`dot_dir`) et la distan
 L'agent stagne après l'épisode 200, ce qui suggère une convergence vers un optimum local. Plusieurs améliorations seraient envisageables :
 
 - **Plus d'épisodes** avec accès GPU pour permettre une exploration plus longue
-- **Ajustement de la reward function** — ajouter un bonus explicite pour chaque nœud du chemin atteint encouragerait la progression vers le goal
-- **Ajustement des hyperparamètres** — réduire le learning rate après convergence ou augmenter le coefficient d'entropie pour encourager plus d'exploration
+- **Ajustement de la reward function** : ajouter un bonus explicite pour chaque nœud du chemin atteint encouragerait la progression vers le goal. En l'état, l'agent peut obtenir un bon score en restant sur la route sans avancer, ce qui explique le comportement de rotation sur place observé lors de l'évaluation.
+- **Ajustement des hyperparamètres** : réduire le learning rate après convergence ou augmenter le coefficient d'entropie pour encourager plus d'exploration
+- **Pénaliser l'immobilité** : ajouter une pénalité si la vitesse est trop faible forcerait l'agent à avancer plutôt que de rester sur place
