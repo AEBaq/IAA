@@ -105,3 +105,9 @@ Ce laboratoire nous a permis d'implémenter et d'entraîner un agent PPO pour la
 Cependant, plusieurs limitations ont été rencontrées. L'entraînement sans GPU a duré 49 heures pour 1000 épisodes, ce qui a fortement limité notre capacité à itérer sur les hyperparamètres et la reward function. De plus, des problèmes rencontrés avec la nouvelle VM ont empêché de tester les améliorations identifiées dans l'analyse, notamment l'ajout d'un bonus de progression vers le goal et la pénalisation de l'immobilité, qui auraient pu corriger le comportement de rotation sur place observé lors de l'évaluation.
 
 Pour la suite, un accès GPU permettrait d'entraîner sur davantage d'épisodes et d'explorer plus facilement différentes configurations, ce qui serait nécessaire pour obtenir un agent capable de naviguer efficacement jusqu'au goal.
+
+## Canards
+Pour remonter un peu le moral pendant la correction de notre labo qui n'est pas fonctionnel, voici des images de canards duckiebot en voyage en Egypte.  
+![canard_avion](canard1.jpg)
+![canard_pyramides](canard2.jpg)
+![canard_pyramide](canard3.jpg)
