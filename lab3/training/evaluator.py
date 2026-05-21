@@ -109,6 +109,7 @@ def evaluate_agent(map_name: str, map_graph: str, num_episodes: int = 10,
 
             # Record rendered frame
             if render:
+                env.render()
                 frame = env.render(mode='rgb_array')
                 video_frames.append(frame)
 
