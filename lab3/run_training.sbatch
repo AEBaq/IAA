@@ -11,6 +11,6 @@ mkdir -p logs
 echo "Job started on $(hostname) at $(date)"
 nvidia-smi
 
-poetry run python main.py
+poetry run python test.py
 
 echo "Job finished at $(date)"

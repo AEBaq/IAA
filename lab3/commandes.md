@@ -96,3 +96,27 @@ print('Saved', len(scores), 'episodes')
 * 4. Évaluer à la fin : `sbatch run_eval.sbatch`
 
 * 5. Consulter l'historique : `sacct -format=JobID,JobName,State,Elapsed`
+ 
+### pyproject.toml
+```toml
+[tool.poetry]
+name = "lab3"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dependencies = [
+    "gym>=0.9.0",
+    "numpy==1.19.0",
+    "pyglet>=1.4.0,<=1.5.0",
+    "pygobject>=3.44.2",
+    "typing-extensions>=4.7.1",
+]
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+```
