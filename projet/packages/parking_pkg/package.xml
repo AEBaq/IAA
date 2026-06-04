@@ -1,0 +1,12 @@
+<package>
+  <name>parking_pkg</name>
+  <version>0.0.1</version>
+  <description>
+  Smart Parking (Reverse) - Lab 4 Final Project.
+  Lane following, parking sign detection, and reverse parking state machine.
+  </description>
+  <maintainer email="kimberly.beyeler@heig-vd.ch">kimberly beyeler</maintainer>
+  <license>None</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>rospy</run_depend>
+</package>
