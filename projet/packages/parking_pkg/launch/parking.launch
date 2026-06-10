@@ -1,15 +1,15 @@
 <launch>
     <!-- Paramètres globaux -->
     <arg name="robot_name"      default="d1"/>
-    <arg name="target_tag_id"   default="0"/>   <!-- Changer selon l'ID de ton AprilTag -->
+    <arg name="target_tag_id"   default="0"/>
     <arg name="base_speed"      default="0.3"/>
     <arg name="reverse_speed"   default="-0.25"/>
-    <arg name="approach_duration" default="1.0"/>  <!-- avancer après détection du tag -->
+    <arg name="approach_duration" default="1.0"/>
     <arg name="align_duration"  default="1.0"/>
     <arg name="reverse_duration" default="2.5"/>
     <arg name="exit_duration"   default="2.5"/>
 
-    <!-- Nœud AprilTag (fourni par Duckietown) -->
+    <!-- Nœud AprilTag -->
     <node name="apriltag_detector_node"
           pkg="apriltag_ros"
           type="apriltag_ros_continuous_node"
@@ -18,6 +18,8 @@
         <param name="camera_frame" value="$(arg robot_name)/camera_optical_frame"/>
         <remap from="image_rect"   to="/$(arg robot_name)/camera_node/image/rect"/>
         <remap from="camera_info"  to="/$(arg robot_name)/camera_node/camera_info"/>
+        <rosparam command="load" file="$(find parking_pkg)/config/settings.yaml"/>
+        <rosparam command="load" file="$(find parking_pkg)/config/tags.yaml"/>
     </node>
 
     <!-- Nœud principal parking -->
@@ -29,9 +31,10 @@
         <param name="target_tag_id"    value="$(arg target_tag_id)"/>
         <param name="base_speed"       value="$(arg base_speed)"/>
         <param name="reverse_speed"    value="$(arg reverse_speed)"/>
-        <param name="approach_duration"   value="$(arg approach_duration)"/>
+        <param name="approach_duration" value="$(arg approach_duration)"/>
         <param name="align_duration"   value="$(arg align_duration)"/>
         <param name="reverse_duration" value="$(arg reverse_duration)"/>
         <param name="exit_duration"    value="$(arg exit_duration)"/>
+        <param name="model_path"       value="/code/catkin_ws/src/projet/models/best_finetuned_model.pt"/>
     </node>
 </launch>
