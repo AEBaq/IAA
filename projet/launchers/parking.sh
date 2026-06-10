@@ -1,16 +1,12 @@
 #!/bin/bash
 source /environment.sh
-# initialize launch file
 dt-launchfile-init
-# YOUR CODE BELOW THIS LINE
 # ----------------------------------------------------------------------------
+export ROS_MASTER_URI=http://d1.local:11311
+export ROS_IP=$(hostname -I | awk '{print $1}')
 
-# Changer target_tag_id selon l'ID de ton AprilTag de parking
 dt-exec roslaunch parking_pkg parking.launch \
-    robot_name:=${VEHICLE_NAME} \
+    robot_name:=d1 \
     target_tag_id:=0
-
 # ----------------------------------------------------------------------------
-# YOUR CODE ABOVE THIS LINE
-# wait for app to end
 dt-launchfile-join

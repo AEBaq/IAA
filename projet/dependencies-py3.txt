@@ -1,7 +1,6 @@
 # LIST YOUR PYTHON3 PACKAGES HERE
-# NOTE: only place non-Duckietown libraries here; pin versions only if necessary
+# NOTE: torch et torchvision sont déjà installés sur le Jetson Nano
+opencv-python
+numpy
 torch
 torchvision
-opencv-python
-onnxruntime
-numpy
