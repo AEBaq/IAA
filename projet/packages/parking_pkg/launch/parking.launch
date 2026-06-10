@@ -18,6 +18,8 @@
         <param name="camera_frame" value="$(arg robot_name)/camera_optical_frame"/>
         <remap from="image_rect"   to="/$(arg robot_name)/camera_node/image/rect"/>
         <remap from="camera_info"  to="/$(arg robot_name)/camera_node/camera_info"/>
+        <rosparam command="load" file="$(find parking_pkg)/config/settings.yaml"/>
+        <rosparam command="load" file="$(find parking_pkg)/config/tags.yaml"/>
     </node>
 
     <!-- Nœud principal parking -->
