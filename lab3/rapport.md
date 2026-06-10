@@ -1,8 +1,11 @@
 # Lab 3 - Reinforcement Learning for Autonomous Driving
 
 Autrices: Emily Baquerizo & Kimberly Beyeler
+
 Professeure: Marina Zapater
+
 Assistants: Guillaume Chacun & Mehdi Akeddar
+
 Classe: IAA-A
 
 ## Introduction
@@ -10,34 +13,24 @@ Ce laboratoire a pour objectif d'entraîner un agent de Reinforcement Learning �
 
 ## Task 1 
 ### Implémentation
-Le path planning est implémenté dans la méthode `reset()` de `DuckiebotWrapper`. À chaque début d'épisode, un nœud de départ et un nœud d'arrivée sont échantillonnés aléatoirement sur le graphe de la carte. Le chemin entre ces deux nœuds est calculé avec l'algorithme de plus court chemin de NetworkX :
+Le path planning est implémenté dans la méthode `reset()` de `DuckiebotWrapper`. À chaque début d'épisode, un noeud de départ et un noeud d'arrivée sont échantillonnés aléatoirement sur le graphe de la carte. Le chemin entre ces deux noeuds est calculé avec l'algorithme de plus court chemin de NetworkX :
 ```python
 self.path = nx.shortest_path(self.map_graph.G, self.start_node, self.finish_node)
 self.next_node = self.path[1]
 ```
-`self.path` contient la liste ordonnée des nœuds à traverser (ex: `["T_2_3", "T_2_4", "T_2_5", ...]`) et `self.next_node` est le premier waypoint après le départ.
+`self.path` contient la liste ordonnée des noeuds à traverser (ex: `["T_2_3", "T_2_4", "T_2_5", ...]`) et `self.next_node` est le premier waypoint après le départ.
 
 ### Positionnement initial
-Une fois le chemin calculé, le robot est placé sur la tuile de départ orienté vers `self.next_node`. La direction est déterminée en comparant les coordonnées de la tuile de départ et du prochain nœud (différence de colonne/ligne), puis convertie en angle selon la convention gym-duckietown. Le robot est positionné dans la bonne voie selon sa direction de marche.
+Une fois le chemin calculé, le robot est placé sur la case de départ orienté vers `self.next_node`. La direction est déterminée en comparant les coordonnées de la case de départ et du prochain noeud (différence de colonne/ligne), puis convertie en angle selon la convention gym-duckietown. Le robot est positionné dans la bonne voie selon sa direction de marche.
 
 ## Task 2 
 ### Design de la fonction de récompense
 La fonction de récompense guide l'agent vers un comportement de conduite autonome en combinant plusieurs composantes :  
-**Avancement** : une récompense égale à la vitesse de l'agent est ajoutée à chaque step. Cela encourage l'agent à avancer plutôt que de rester immobile.  
+**Avancement** : une récompense égale à la vitesse du robot est ajoutée à chaque step. Cela l'encourage à avancer plutôt que de rester immobile.  
 **Suivi de voie** : la distance latérale au centre de la voie (`dist`) est soustraite à la récompense. Plus le robot s'éloigne du centre, plus il est pénalisé.  
 **Alignement avec la voie** : le produit scalaire entre la direction du robot et la direction de la voie (`dot_dir`) est ajouté avec un poids de 1.2. Cela encourage le robot à rester aligné avec la voie et pénalise les angles trop importants.  
 **Fluidité du steering** : les changements brusques de direction entre deux steps consécutifs sont pénalisés avec un poids de 0.5. Cela favorise une conduite fluide.  
 **Fin d'épisode** : si l'épisode se termine par une collision ou une sortie de route, une pénalité de -100 est appliquée. Si le goal est atteint, un bonus de +100 est accordé.
-
-### Tableau récapitulatif
-| Composante | Signal | Poids | Effet |
-|---|---|---|---|
-| Avancement | `velocity` | 1.0 | Encourage à avancer |
-| Suivi de voie | `dist` | -1.0 | Reste au centre |
-| Alignement | `dot_dir` | +1.2 | Reste aligné |
-| Fluidité | `Δsteering` | -0.5 | Conduite fluide |
-| Goal atteint | `done` | +100 | Objectif principal |
-| Collision | `done` | -100 | Éviter les crashes |
 
 ## Task 3
 ### Choix d'algorithme RL
@@ -50,8 +43,8 @@ Au sein de la famille Actor-Critic, nous choisissons PPO (Proximal Policy Optimi
 #### Hyperparamètres
 | Paramètre     | Valeur | Rôle                                                     |
 | ------------- | ------ | -------------------------------------------------------- |
-| Learning rate | 3×10⁻⁴ | Vitesse d'apprentissage de l'optimiseur Adam             |
-| Gamma (γ)     | 0.99   | Facteur de discount — importance des récompenses futures |
+| Learning rate | $3 * 10^{-4}$ | Vitesse d'apprentissage de l'optimiseur Adam             |
+| Gamma (γ)     | 0.99   | Facteur de discount, importance des récompenses futures |
 | GAE lambda    | 0.95   | Lissage des avantages                                    |
 | Clip epsilon  | 0.2    | Limite les mises à jour de la politique                  |
 | Value coef    | 0.5    | Poids de la loss du Critic                               |
@@ -95,7 +88,7 @@ La reward function basée sur l'alignement avec la voie (`dot_dir`) et la distan
 #### Limites et améliorations possibles
 L'agent stagne après l'épisode 200, ce qui suggère une convergence vers un optimum local. Plusieurs améliorations seraient envisageables :
 - **Plus d'épisodes** avec accès GPU pour permettre une exploration plus longue
-- **Ajustement de la reward function** : ajouter un bonus explicite pour chaque nœud du chemin atteint encouragerait la progression vers le goal. En l'état, l'agent peut obtenir un bon score en restant sur la route sans avancer, ce qui explique le comportement de rotation sur place observé lors de l'évaluation.
+- **Ajustement de la reward function** : ajouter un bonus explicite pour chaque noeud du chemin atteint encouragerait la progression vers le goal. En l'état, l'agent peut obtenir un bon score en restant sur la route sans avancer, ce qui explique le comportement de rotation sur place observé lors de l'évaluation.
 - **Ajustement des hyperparamètres** : réduire le learning rate après convergence ou augmenter le coefficient d'entropie pour encourager plus d'exploration
 - **Pénaliser l'immobilité** : ajouter une pénalité si la vitesse est trop faible forcerait l'agent à avancer plutôt que de rester sur place
 
@@ -107,7 +100,18 @@ Cependant, plusieurs limitations ont été rencontrées. L'entraînement sans GP
 Pour la suite, un accès GPU permettrait d'entraîner sur davantage d'épisodes et d'explorer plus facilement différentes configurations, ce qui serait nécessaire pour obtenir un agent capable de naviguer efficacement jusqu'au goal.
 
 ## Canards
-Pour remonter un peu le moral pendant la correction de notre labo qui n'est pas fonctionnel, voici des images de canards duckiebot en voyage en Egypte.  
-![canard_avion](canard1.jpg)
-![canard_pyramides](canard2.jpg)
-![canard_pyramide](canard3.jpg)
+Pour remonter un peu le moral pendant la correction de notre labo qui n'est pas fonctionnel, voici des images de canards duckiebot en voyage en Egypte. 
+<div align="center">
+  <img src="canard1.jpg" alt="Image 1" width="45%">
+  <img src="canard_sphynx_cropped.jpg" alt="Image 2" width="45%">
+</div> 
+
+<div align="center">
+  <img src="canard2.jpg" alt="Image 1" width="45%">
+  <img src="canard_pyramide.jpg" alt="Image 2" width="45%">
+</div>
+
+<div align="center">
+  <img src="canard3.jpg" alt="Image 1" width="45%">
+  <img src="canard_plage_cropped.jpg" alt="Image 2" width="45%">
+</div>
