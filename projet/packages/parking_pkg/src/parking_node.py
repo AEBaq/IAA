@@ -127,7 +127,7 @@ class ParkingNode:
         rospy.loginfo(f"[{self.node_name}] Alignement terminé — début recul")
         self._start_phase(
             duration=self.reverse_duration,
-            vel_left=self.reverse_speed,
+            vel_left=self.reverse_speed * 0.5,
             vel_right=self.reverse_speed,
             on_done=self._on_reverse_done
         )
@@ -147,7 +147,7 @@ class ParkingNode:
         rospy.loginfo(f"[{self.node_name}] Attente terminée — sortie du parking")
         self._start_phase(
             duration=self.exit_duration,
-            vel_left=self.base_speed,
+            vel_left=self.base_speed * 0.5,
             vel_right=self.base_speed,
             on_done=self._on_exit_done
         )
