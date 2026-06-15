@@ -48,15 +48,27 @@ L'identification du spot de parking assigné repose sur la détection d'AprilTag
 Les phases de manœuvre (alignement, recul, sortie) fonctionnent en boucle ouverte : on envoie des commandes de durée fixe aux roues sans regarder ce que le robot fait réellement. Comme vu en cours, ce type de contrôle ne peut pas corriger les erreurs en cours de route, si le robot dérive à cause du sol ou d'un glissement de roue, il ne le détectera pas. C'est simple à mettre en place, mais ça limite la précision du parking.
 
 ## Résultats 
+Dû aux divers imprévus dont nous avons discuté lors de la présentation, nous n'avons pas de résultat concret sur circuit à présenter...
 
-### Performance du modèle de lane following
-### Ce qui fonctionne
-
-## Analyse et améliorations possibles
-
-## Limites de l'approche open-loop pour le parking
-## Limites de l'apprentissage par imitation pour le lane following
 ## Problèmes rencontrés
+Nous avons rencontré divers problèmes lors de ce projet. Pour commencer, notre laboratoire n'arrivant pas à suivre la ligne correctement, nous avons dû principalement réparer ce laboratoire avant de pouvoir continuer avec notre code. 
+
+Ayant passé la majorité du temps du labo à réparer le robot le jour où nous souhaitions tester notre solution du labo 2, nous avons décidé de venir en début de semaine afin de tester cela ainsi que la suite du code pour le projet qui avait été écrit entre temps. Malheureusement, nous avons passé plusieurs heures à tenter de faire rouler le robot sans qu'il ne réponde à aucune de nos tentatives (Test de notre solution, test uniquement du lane following corrigé du labo 2, test lane following issue de duckiebot, test pour le faire avancé grâce au keyboard comme vu lors du labo introduction du robot).
+
+Une fois que nous avons réussi à le faire avancé grâce à l'aide de Guillaume, nous voulions tout de même tester le robot avant la présentatîon. Cette fois-ci, nous avons eu des build qui prenaient un temps incommensurable. La VM qui crashait à plusieurs occasions n'a pas été non plus...
+
+Une fois le build effectué, nos problèmes n'étaient pas fini puisque cette fois-ci, nous avions un message d'erreur annonçant que notre disque était plein et que nous devions réglé cela afin de pouvoir lancer notre job.
+
+N'ayant plus le temps et surtout plus la force de continuer à réparer, nous avons décidé de s'arrêter là pour la phase de test.
+
 ## Améliorations prioritaires
+Afin de tout de même compléter notre 1ère partie de l'implémentation, nous avons effectué une liste d'amélioration à mettre en place afin d'avoir notre version finale:
+ 1. Tester la distance de détection du tag afin de pouvoir adapter la réaction du robot après détection (continuer à avancer un peu pour s'aligner, ou s'arrêter directement, ainsi que la distance à couvrir jusqu'à la place)
+ 2. Tester le parking en épis afin de valider les différentes vitesses de roues pour la rotation ou adapter la vitesse des roues si nécessaire
+ 3. Mettre en place le redressement du parking afin de passer d'un parking en épis, à un parking latéral (Adaptation de la machine d'état, ajout d'une phase de redressement du robot pour finaliser le parking, et adapter la sortie)
+ 4. Gérer le parking du côté droite et gauche en détectant si le tag se trouve à gauche ou à droite (pour cela, nous pensions split l'image et regarder de quel côté se trouve le tag pour se parquer du même côté)
 
 ## Conclusion 
+Pour finir, ce projet aurait pu être intéressant à finaliser si nous n'avions pas eu tout ces problèmes avec le robot. Le fait d'avoir qu'un seul pc pouvant communiquer avec le robot n'a pas forcément aidé (problème que nous avions tenté de régler avec l'aide de plusieurs assitants au labo 1 sans succès). Malgré cela, nous avons plusieurs idée de comment mettre cela en place, et nous regrettons de ne pas pouvoir les mettre entièrement en place. Nous avons tout de même pu travailler sur un projet final réunissant pas mal de compétence observé lors des différents laboratoires.
+
+Nous souaitant dire un grand merci aux assitants pour leurs aides durant ces différents laboratoires ainsi qu'à Mme. Zapater pour ce cours. Malgré les couac, ce fut un plaisir d'assister à ce cours.
